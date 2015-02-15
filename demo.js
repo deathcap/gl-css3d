@@ -26,8 +26,6 @@ cssWorld.style.zIndex = '1' // above WebGL canvas
 var element = document.createElement('iframe')
 //element.src = 'http://browserify.org'
 element.src = 'data:text/html,<body bgcolor=purple>'
-element.style.width = 256 + 'px'
-element.style.height = 256 + 'px'
 element.style.position = 'absolute'
 element.style.transformStyle = 'preserve-3d'
 //element.style.display = 'none'
@@ -126,5 +124,7 @@ shell.on("gl-render", function() {
   //var matrixWorldInverse = mat4.create()
   //mat4.invert(matrixWorldInverse, view)
   //mat4.transpose(matrixWorldInverse, matrixWorldInverse)
+  element.style.width = (shell.width / 3) + 'px'
+  element.style.height = (shell.height / 3) + 'px'
   element.style.transform = matrixToCSS(view)
 })
