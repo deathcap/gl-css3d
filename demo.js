@@ -29,9 +29,10 @@ cameraElement.style.transformStyle = 'preserve-3d'
 //cameraElement.style.display = 'none'
 //cameraElement.style.pointerEvents = 'auto' // allow mouse interaction
 
-var iframe = document.createElement('iframe')
+var iframe = document.createElement('div') // TODO: change back to iframe
 //iframe.src = 'http://browserify.org'
-iframe.src = 'data:text/html,<body bgcolor=purple>'
+//iframe.src = = 'data:text/html,<body bgcolor=purple>'
+iframe.style.backgroundColor = 'purple'
 iframe.style.width = '100%'
 iframe.style.height = '100%'
 cameraElement.appendChild(iframe)
