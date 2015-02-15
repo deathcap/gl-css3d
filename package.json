@@ -7,7 +7,8 @@
     "type": "git",
     "url": "git@github.com:deathcap/gl-css3d.git"
   },
-  "keywords": [],
+  "keywords": [
+  ],
   "scripts": {
     "start": "wzrd demo.js"
   },
@@ -15,10 +16,9 @@
   "license": "MIT",
   "devDependencies": {
     "gl-now": "^1.4.0",
-    "game-shell-orbit-camera": "git://github.com/deathcap/game-shell-orbit-camera.git#ad318933f9304923f22c8f0cd84cfa64ac8e3c5b",
+    "game-shell-orbit-camera": "^1.0.0",
     "gl-render-text": "0.0.1",
     "draw-billboard": "git://github.com/deathcap/draw-billboard.git#1d7d06ef946a83f0f65cb14092dcbc7830cd6153",
-    "gl-mat4": "^1.1.2",
-    "game-shell-fps-camera": "^0.7.0"
+    "gl-mat4": "^1.1.2"
   }
 }
