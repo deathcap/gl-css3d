@@ -59,7 +59,6 @@ varying vec4 vColor;\
 \
 void main() {\
   gl_Position = projViewModel * vec4(position, 1.0);\
-  vColor = vec4(gl_Position.x, gl_Position.y, gl_Position.z, 1.0);\
 }",
 
   fragment: "/* voxel-decals fragment shader */\
@@ -67,7 +66,7 @@ precision highp float;\
 varying vec4 vColor;\
 \
 void main() {\
-  gl_FragColor = vColor;\
+  gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\
 }"})(gl)
 
 })
