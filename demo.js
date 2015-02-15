@@ -119,9 +119,7 @@ shell.on("gl-render", function() {
   mesh.unbind()
 
   // CSS world perspective TODO: only on gl-resize -- this doesn't change often
-  var cameraFOV = 45
-  var screenHeight = shell.height
-  var fovPx = 0.5 / Math.tan(cameraFOVradians / 2) * screenHeight
+  var fovPx = 0.5 / Math.tan(cameraFOVradians / 2) * shell.height
   domElement.style.perspective = fovPx + 'px'
   //domElement.style.perspectiveOrigin = '50% 50%' // already is the default
   domElement.style.width = shell.width + 'px'
@@ -134,7 +132,7 @@ shell.on("gl-render", function() {
   //mat4.transpose(matrixWorldInverse, matrixWorldInverse)
   cameraElement.style.width = shell.width + 'px'
   cameraElement.style.height = shell.height + 'px'
- 
+
   // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
   // TODO: matrix transformation instead?
   var cssMatrix = mat4.clone(view)
@@ -143,6 +141,7 @@ shell.on("gl-render", function() {
   cssMatrix[9] = -cssMatrix[9]
   cssMatrix[13] = -cssMatrix[13]
 
+  /*
   var percentBorder = 0.05
   var planeWidth = 1
   var planeHeight = 1
@@ -150,6 +149,7 @@ shell.on("gl-render", function() {
   var scaleY = (1 + percentBorder) * (shell.height / planeHeight)
   var scaleZ = 1
   mat4.scale(cssMatrix, cssMatrix, [scaleX, scaleY, scaleZ])
+  */
 
   cameraElement.style.transform = 'translate3d(0,0,'+fovPx+'px) ' + matrixToCSS(cssMatrix) + ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
 })
