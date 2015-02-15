@@ -76,8 +76,6 @@ var model = mat4.create()
 
 var projViewModel = mat4.create()
 
-var cameraFOVdegrees = 45
-
 var scratch0 = new Float32Array(16)
 var scratch1 = new Float32Array(16)
 
@@ -92,8 +90,11 @@ function simpleCameraView(out) {
   return out
 }
 
+var cameraFOVdegrees = 45
+var cameraFOVradians = cameraFOVdegrees * Math.PI / 180
+
 shell.on("gl-render", function() {
-  var proj = mat4.perspective(mat4.create(), cameraFOVdegrees * Math.PI / 180, shell.width/shell.height, 0.1, 1000.0)
+  var proj = mat4.perspective(mat4.create(), cameraFOVradians, shell.width/shell.height, 0.1, 1000.0)
   var view = camera.view()
   //var view = simpleCameraView()
 
@@ -112,7 +113,7 @@ shell.on("gl-render", function() {
   // CSS world perspective TODO: only on gl-resize -- this doesn't change often
   var cameraFOV = 45
   var screenHeight = shell.height
-  var fovPx = 0.5 / Math.tan(cameraFOVdegrees * Math.PI / 360) * screenHeight
+  var fovPx = 0.5 / Math.tan(cameraFOVradians / 2) * screenHeight
   cssWorld.style.perspective = fovPx + 'px'
   cssWorld.style.width = shell.width + 'px'
   cssWorld.style.height = shell.height + 'px'
