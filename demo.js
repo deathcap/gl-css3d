@@ -95,7 +95,7 @@ var cameraFOVradians = cameraFOVdegrees * Math.PI / 180
 
 window.setInterval(function() {
   element.style.display = (element.style.display === 'none' ? '' : 'none')
-}, 1000)
+}, 500)
 
 shell.on("gl-render", function() {
   var proj = mat4.perspective(mat4.create(), cameraFOVradians, shell.width/shell.height, 0.1, 1000.0)
@@ -137,5 +137,5 @@ shell.on("gl-render", function() {
   view[9] = -view[9]
   view[13] = -view[13]
 
-  element.style.transform = matrixToCSS(view)
+  element.style.transform = 'translate3d(0,0,'+fovPx+'px) ' + matrixToCSS(view) + ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
 })
