@@ -87,7 +87,13 @@ var scratch1 = new Float32Array(16)
 
 // based on orbit-camera
 function simpleCameraView(out) {
-  return [-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, -1, 1]
+  if (!out) out = mat4.create()
+
+  var quaternion = [0,1,0,0]
+  var translation = [0,0,-1]
+  mat4.fromRotationTranslation(out, quaternion, translation)
+
+  return out
 }
 
 shell.on("gl-render", function() {
