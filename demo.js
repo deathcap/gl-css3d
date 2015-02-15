@@ -93,9 +93,9 @@ function simpleCameraView(out) {
 var cameraFOVdegrees = 45
 var cameraFOVradians = cameraFOVdegrees * Math.PI / 180
 
-global.toggle = function toggle() {
+window.setInterval(function() {
   element.style.display = (element.style.display === 'none' ? '' : 'none')
-};
+}, 1000)
 
 shell.on("gl-render", function() {
   var proj = mat4.perspective(mat4.create(), cameraFOVradians, shell.width/shell.height, 0.1, 1000.0)
