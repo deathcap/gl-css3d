@@ -5,6 +5,9 @@ var shell = require("gl-now")({clearColor: [0.2, 0.4, 0.8, 1.0]})
 var camera = require("game-shell-orbit-camera")(shell)
 var renderText = require("gl-render-text")
 var mat4 = require("gl-mat4")
+var mat3 = require("gl-mat3")
+var vec3 = require("gl-vec3")
+var quat = require("gl-matrix-quat")
 var createMesh = require("gl-mesh")
 var glslify = require("glslify")
 
@@ -79,9 +82,40 @@ var projViewModel = mat4.create()
 
 var cameraFOVdegrees = 45
 
+var scratch0 = new Float32Array(16)
+var scratch1 = new Float32Array(16)
+
+// based on orbit-camera
+function simpleCameraView(out) {
+  var rotation = quat.create()
+  var center = vec3.create()
+  var distance = 1.0
+
+  var eye = [0,0,-1]
+  var target = [0,0,0]
+  var up = [0,1,0]
+
+  // lookAt(eye, target, up)
+  mat4.lookAt(scratch0, eye, target, up)
+  mat3.fromMat4(scratch0, scratch0)
+  quat.fromMat3(rotation, scratch0)
+  distance = vec3.distance(eye, center)
+
+  // view(out)
+  if (!out) out = mat4.create()
+  scratch1[0] = scratch1[1] = 0.0
+  scratch1[2] = -distance
+  mat4.fromRotationTranslation(out,
+      quat.conjugate(scratch0, rotation),
+      scratch1)
+  mat4.translate(out, out, vec3.negate(scratch0, center))
+  return out
+}
+
 shell.on("gl-render", function() {
   var proj = mat4.perspective(mat4.create(), cameraFOVdegrees * Math.PI / 180, shell.width/shell.height, 0.1, 1000.0)
-  var view = camera.view()
+  //var view = camera.view()
+  var view = simpleCameraView()
 
   shader.bind()
   shader.attributes.position.location = 0

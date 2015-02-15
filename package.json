@@ -12,7 +12,10 @@
     "start": "wzrd demo.js"
   },
   "dependencies": {
-    "matrix-to-css": "^1.0.4"
+    "matrix-to-css": "^1.0.4",
+    "gl-matrix-quat": "^2.2.1-npm",
+    "gl-mat3": "^1.0.0",
+    "gl-vec3": "^1.0.3"
   },
   "license": "MIT",
   "devDependencies": {
