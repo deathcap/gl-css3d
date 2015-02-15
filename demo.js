@@ -143,5 +143,13 @@ shell.on("gl-render", function() {
   cssMatrix[9] = -cssMatrix[9]
   cssMatrix[13] = -cssMatrix[13]
 
+  var percentBorder = 0.05
+  var planeWidth = 1
+  var planeHeight = 1
+  var scaleX = (1 + percentBorder) * (shell.width / planeWidth)
+  var scaleY = (1 + percentBorder) * (shell.height / planeHeight)
+  var scaleZ = 1
+  mat4.scale(cssMatrix, cssMatrix, [scaleX, scaleY, scaleZ])
+
   cameraElement.style.transform = 'translate3d(0,0,'+fovPx+'px) ' + matrixToCSS(cssMatrix) + ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
 })
