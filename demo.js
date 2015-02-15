@@ -16,7 +16,10 @@ shell.on("gl-init", function() {
   var gl = shell.gl
   texture = renderText(gl, "Billboard")
 
-  mesh = createMesh(gl, require("bunny"))
+  mesh = createMesh(gl,
+      [[0, 1, 2],
+       [2, 1, 3]],
+      { "position": [[-1,-1],   [0, 1],    [0, 0],    [1, -1]] })
 
   shader = glslify({
     inline: true,
@@ -41,7 +44,7 @@ void main() {\
 })
 
 var model = mat4.create()
-mat4.translate(model, model, [0,-5,20])
+mat4.translate(model, model, [0,0,10])
 
 shell.on("gl-render", function() {
   var proj = mat4.perspective(mat4.create(), Math.PI/4.0, shell.width/shell.height, 0.1, 1000.0)
