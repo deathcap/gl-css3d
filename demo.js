@@ -125,5 +125,13 @@ shell.on("gl-render", function() {
   //mat4.transpose(matrixWorldInverse, matrixWorldInverse)
   element.style.width = (shell.width / 4) + 'px'
   element.style.height = (shell.height / 4) + 'px'
+ 
+  // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
+  // TODO: matrix transformation instead?
+  view[1] = -view[1]
+  view[5] = -view[5]
+  view[9] = -view[9]
+  view[13] = -view[13]
+
   element.style.transform = matrixToCSS(view)
 })
