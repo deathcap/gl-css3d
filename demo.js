@@ -1,6 +1,6 @@
 "use strict"
 // based on example from https://github.com/mikolalysenko/draw-billboard
-var shell = require("gl-now")()
+var shell = require("gl-now")({clearColor: [0.2, 0.4, 0.8, 1.0]})
 var camera = require("game-shell-orbit-camera")(shell)
 var renderText = require("gl-render-text")
 var mat4 = require("gl-mat4")
