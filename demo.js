@@ -44,10 +44,10 @@ shell.on("gl-init", function() {
       [3, 1, 2]
        ],
       { "position": [
-        [-1, -1, 0],
-        [-1, 1, 0],
-        [1, -1, 0],
-        [1, 1, 0]] })
+        [-1/4, -1/4, 0],
+        [-1/4, 1/4, 0],
+        [1/4, -1/4, 0],
+        [1/4, 1/4, 0]] })
 
   shader = glslify({
     inline: true,
@@ -73,8 +73,6 @@ void main() {\
 })
 
 var model = mat4.create()
-var s=1/3
-mat4.scale(model, model, [s,s,s])
 
 var projViewModel = mat4.create()
 
@@ -96,8 +94,8 @@ function simpleCameraView(out) {
 
 shell.on("gl-render", function() {
   var proj = mat4.perspective(mat4.create(), cameraFOVdegrees * Math.PI / 180, shell.width/shell.height, 0.1, 1000.0)
-  //var view = camera.view()
-  var view = simpleCameraView()
+  var view = camera.view()
+  //var view = simpleCameraView()
 
   shader.bind()
   shader.attributes.position.location = 0
@@ -124,7 +122,7 @@ shell.on("gl-render", function() {
   //var matrixWorldInverse = mat4.create()
   //mat4.invert(matrixWorldInverse, view)
   //mat4.transpose(matrixWorldInverse, matrixWorldInverse)
-  element.style.width = (shell.width / 3) + 'px'
-  element.style.height = (shell.height / 3) + 'px'
+  element.style.width = (shell.width / 4) + 'px'
+  element.style.height = (shell.height / 4) + 'px'
   element.style.transform = matrixToCSS(view)
 })
