@@ -12,6 +12,25 @@ var positions = new Array(100)
 var mesh
 var shader
 
+var cssWorld = document.createElement('div')
+cssWorld.style.transformStyle = 'preserve-3d'
+cssWorld.style.overflow = 'hidden'
+cssWorld.style.pointerEvents = 'none'
+cssWorld.style.position = 'absolute'
+cssWorld.style.zIndex = '1' // above WebGL canvas
+
+var element = document.createElement('iframe')
+//element.src = 'http://browserify.org'
+element.src = 'data:text/html,<body bgcolor=purple>'
+element.style.width = 256
+element.style.height = 256
+element.style.position = 'absolute'
+element.style.transformStyle = 'preserve-3d'
+element.style.pointerEvents = 'auto'
+
+cssWorld.appendChild(element)
+document.body.appendChild(cssWorld)
+
 shell.on("gl-init", function() {
   var gl = shell.gl
   texture = renderText(gl, "Billboard")
@@ -71,4 +90,14 @@ shell.on("gl-render", function() {
   mesh.bind(shader)
   mesh.draw()
   mesh.unbind()
+
+  // CSS world perspective TODO: only on gl-resize -- this doesn't change often
+  var cameraFOV = 45
+  var screenHeight = shell.height
+  var fovPx = 0.5 / Math.tan(cameraFOV * Math.PI / 360) * screenHeight
+  cssWorld.style.perspective = fovPx + 'px'
+  cssWorld.style.width = shell.width + 'px'
+  cssWorld.style.height = shell.height + 'px'
+
+  // CSS element
 })
