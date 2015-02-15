@@ -27,6 +27,7 @@ element.style.width = 256 + 'px'
 element.style.height = 256 + 'px'
 element.style.position = 'absolute'
 element.style.transformStyle = 'preserve-3d'
+//element.style.display = 'none'
 //element.style.pointerEvents = 'auto' // allow mouse interaction
 
 cssWorld.appendChild(element)
@@ -71,7 +72,8 @@ void main() {\
 })
 
 var model = mat4.create()
-//mat4.scale(model, model, [256,256,256])
+var s=1/3
+mat4.scale(model, model, [s,s,s])
 
 var projViewModel = mat4.create()
 
@@ -83,8 +85,6 @@ shell.on("gl-render", function() {
 
   shader.bind()
   shader.attributes.position.location = 0
-
-  //view = mat4.create()
 
   mat4.multiply(projViewModel, proj, view)
   mat4.multiply(projViewModel, projViewModel, model)
