@@ -1,0 +1,17 @@
+{
+  "name": "gl-css3d",
+  "description": "",
+  "version": "0.0.1",
+  "main": "gl-css3d.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:deathcap/gl-css3d.git"
+  },
+  "keywords": [
+    "voxel",
+    "plugin"
+  ],
+  "dependencies": {
+  },
+  "license": "MIT"
+}
