@@ -17,9 +17,15 @@ shell.on("gl-init", function() {
   texture = renderText(gl, "Billboard")
 
   mesh = createMesh(gl,
-      [[0, 1, 2],
-       [2, 1, 3]],
-      { "position": [[-1,-1],   [0, 1],    [0, 0],    [1, -1]] })
+      [
+      [0, 1, 2],
+      [3, 1, 2]
+       ],
+      { "position": [
+        [0, 0, 0],
+        [0, 1, 0],
+        [1, 0, 0],
+        [1, 1, 0]] })
 
   shader = glslify({
     inline: true,
@@ -29,22 +35,26 @@ attribute vec3 position;\
 uniform mat4 projection;\
 uniform mat4 view;\
 uniform mat4 model;\
+varying vec4 vColor;\
 \
 void main() {\
   gl_Position = projection * view * model * vec4(position, 1.0);\
+  vColor = vec4(gl_Position.x, gl_Position.y, gl_Position.z, 1.0);\
 }",
 
   fragment: "/* voxel-decals fragment shader */\
 precision highp float;\
+varying vec4 vColor;\
 \
 void main() {\
-  gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);\
+  gl_FragColor = vColor;\
 }"})(gl)
 
 })
 
 var model = mat4.create()
 mat4.translate(model, model, [0,0,10])
+mat4.scale(model, model, [4,4,4])
 
 shell.on("gl-render", function() {
   var proj = mat4.perspective(mat4.create(), Math.PI/4.0, shell.width/shell.height, 0.1, 1000.0)
