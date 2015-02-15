@@ -16,23 +16,23 @@ var positions = new Array(100)
 var mesh
 var shader
 
-var cssWorld = document.createElement('div')
-cssWorld.style.transformStyle = 'preserve-3d'
-cssWorld.style.overflow = 'hidden'
-cssWorld.style.pointerEvents = 'none'
-cssWorld.style.position = 'absolute'
-cssWorld.style.zIndex = '1' // above WebGL canvas
+var domElement = document.createElement('div')
+domElement.style.transformStyle = 'preserve-3d'
+domElement.style.overflow = 'hidden'
+domElement.style.pointerEvents = 'none'
+domElement.style.position = 'absolute'
+domElement.style.zIndex = '1' // above WebGL canvas
 
-var element = document.createElement('iframe')
-//element.src = 'http://browserify.org'
-element.src = 'data:text/html,<body bgcolor=purple>'
-element.style.position = 'absolute'
-element.style.transformStyle = 'preserve-3d'
-//element.style.display = 'none'
-//element.style.pointerEvents = 'auto' // allow mouse interaction
+var cameraElement = document.createElement('iframe')
+//cameraElement.src = 'http://browserify.org'
+cameraElement.src = 'data:text/html,<body bgcolor=purple>'
+cameraElement.style.position = 'absolute'
+cameraElement.style.transformStyle = 'preserve-3d'
+//cameraElement.style.display = 'none'
+//cameraElement.style.pointerEvents = 'auto' // allow mouse interaction
 
-cssWorld.appendChild(element)
-document.body.appendChild(cssWorld)
+domElement.appendChild(cameraElement)
+document.body.appendChild(domElement)
 
 shell.on("gl-init", function() {
   var gl = shell.gl
@@ -93,7 +93,7 @@ var cameraFOVdegrees = 45
 var cameraFOVradians = cameraFOVdegrees * Math.PI / 180
 
 window.setInterval(function() {
-  element.style.display = (element.style.display === 'none' ? '' : 'none')
+  cameraElement.style.display = (cameraElement.style.display === 'none' ? '' : 'none')
 }, 500)
 
 shell.on("gl-render", function() {
@@ -117,18 +117,18 @@ shell.on("gl-render", function() {
   var cameraFOV = 45
   var screenHeight = shell.height
   var fovPx = 0.5 / Math.tan(cameraFOVradians / 2) * screenHeight
-  cssWorld.style.perspective = fovPx + 'px'
-  //cssWorld.style.perspectiveOrigin = '50% 50%' // already is the default
-  cssWorld.style.width = shell.width + 'px'
-  cssWorld.style.height = shell.height + 'px'
+  domElement.style.perspective = fovPx + 'px'
+  //domElement.style.perspectiveOrigin = '50% 50%' // already is the default
+  domElement.style.width = shell.width + 'px'
+  domElement.style.height = shell.height + 'px'
 
-  // CSS element
-  //element.style.transform = 'translateZ(' + fovPx + 'px) ' + matrixToCSS(view) + ' translate3d(' + (shell.width/2) + 'px, ' + (shell.height/2) + 'px, 0)'
+  // CSS cameraElement
+  //cameraElement.style.transform = 'translateZ(' + fovPx + 'px) ' + matrixToCSS(view) + ' translate3d(' + (shell.width/2) + 'px, ' + (shell.height/2) + 'px, 0)'
   //var matrixWorldInverse = mat4.create()
   //mat4.invert(matrixWorldInverse, view)
   //mat4.transpose(matrixWorldInverse, matrixWorldInverse)
-  element.style.width = shell.width + 'px'
-  element.style.height = shell.height + 'px'
+  cameraElement.style.width = shell.width + 'px'
+  cameraElement.style.height = shell.height + 'px'
  
   // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
   // TODO: matrix transformation instead?
@@ -138,5 +138,5 @@ shell.on("gl-render", function() {
   cssMatrix[9] = -cssMatrix[9]
   cssMatrix[13] = -cssMatrix[13]
 
-  element.style.transform = 'translate3d(0,0,'+fovPx+'px) ' + matrixToCSS(cssMatrix) + ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
+  cameraElement.style.transform = 'translate3d(0,0,'+fovPx+'px) ' + matrixToCSS(cssMatrix) + ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
 })
