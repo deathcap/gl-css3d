@@ -1,5 +1,6 @@
 "use strict"
 
+var matrixToCSS = require("matrix-to-css")
 var shell = require("gl-now")({clearColor: [0.2, 0.4, 0.8, 1.0]})
 var camera = require("game-shell-orbit-camera")(shell)
 var renderText = require("gl-render-text")
@@ -26,7 +27,7 @@ element.style.width = 256
 element.style.height = 256
 element.style.position = 'absolute'
 element.style.transformStyle = 'preserve-3d'
-element.style.pointerEvents = 'auto'
+//element.style.pointerEvents = 'auto' // allow mouse interaction
 
 cssWorld.appendChild(element)
 document.body.appendChild(cssWorld)
@@ -100,4 +101,5 @@ shell.on("gl-render", function() {
   cssWorld.style.height = shell.height + 'px'
 
   // CSS element
+  element.style.transform = matrixToCSS(view) // TODO
 })
