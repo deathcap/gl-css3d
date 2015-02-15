@@ -71,14 +71,20 @@ void main() {\
 })
 
 var model = mat4.create()
+//mat4.scale(model, model, [256,256,256])
+
 var projViewModel = mat4.create()
 
+var cameraFOVdegrees = 45
+
 shell.on("gl-render", function() {
-  var proj = mat4.perspective(mat4.create(), Math.PI/4.0, shell.width/shell.height, 0.1, 1000.0)
+  var proj = mat4.perspective(mat4.create(), cameraFOVdegrees * Math.PI / 180, shell.width/shell.height, 0.1, 1000.0)
   var view = camera.view()
 
   shader.bind()
   shader.attributes.position.location = 0
+
+  //view = mat4.create()
 
   mat4.multiply(projViewModel, proj, view)
   mat4.multiply(projViewModel, projViewModel, model)
@@ -92,12 +98,15 @@ shell.on("gl-render", function() {
   // CSS world perspective TODO: only on gl-resize -- this doesn't change often
   var cameraFOV = 45
   var screenHeight = shell.height
-  var fovPx = 0.5 / Math.tan(cameraFOV * Math.PI / 360) * screenHeight
+  var fovPx = 0.5 / Math.tan(cameraFOVdegrees * Math.PI / 360) * screenHeight
   cssWorld.style.perspective = fovPx + 'px'
   cssWorld.style.width = shell.width + 'px'
   cssWorld.style.height = shell.height + 'px'
 
   // CSS element
   //element.style.transform = 'translateZ(' + fovPx + 'px) ' + matrixToCSS(view) + ' translate3d(' + (shell.width/2) + 'px, ' + (shell.height/2) + 'px, 0)'
+  //var matrixWorldInverse = mat4.create()
+  //mat4.invert(matrixWorldInverse, view)
+  //mat4.transpose(matrixWorldInverse, matrixWorldInverse)
   element.style.transform = matrixToCSS(view)
 })
