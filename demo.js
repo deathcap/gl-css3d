@@ -32,13 +32,11 @@ shell.on("gl-init", function() {
     vertex: "/* voxel-decals vertex shader */\
 attribute vec3 position;\
 \
-uniform mat4 projection;\
-uniform mat4 view;\
-uniform mat4 model;\
+uniform mat4 projViewModel;\
 varying vec4 vColor;\
 \
 void main() {\
-  gl_Position = projection * view * model * vec4(position, 1.0);\
+  gl_Position = projViewModel * vec4(position, 1.0);\
   vColor = vec4(gl_Position.x, gl_Position.y, gl_Position.z, 1.0);\
 }",
 
@@ -56,15 +54,19 @@ var model = mat4.create()
 mat4.translate(model, model, [0,0,10])
 mat4.scale(model, model, [4,4,4])
 
+var projViewModel = mat4.create()
+
 shell.on("gl-render", function() {
   var proj = mat4.perspective(mat4.create(), Math.PI/4.0, shell.width/shell.height, 0.1, 1000.0)
   var view = camera.view()
 
   shader.bind()
   shader.attributes.position.location = 0
-  shader.uniforms.projection = proj
-  shader.uniforms.view = view
-  shader.uniforms.model = model
+
+  mat4.multiply(projViewModel, proj, view)
+  mat4.multiply(projViewModel, projViewModel, model)
+
+  shader.uniforms.projViewModel = projViewModel
 
   mesh.bind(shader)
   mesh.draw()
