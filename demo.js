@@ -87,26 +87,7 @@ var scratch1 = new Float32Array(16)
 
 // based on orbit-camera
 function simpleCameraView(out) {
-  var rotation = quat.create()
-  var distance = 1.0
-
-  var eye = [0,0,-1]
-  var target = [0,0,0]
-  var up = [0,1,0]
-
-  // lookAt(eye, target, up)
-  mat4.lookAt(scratch0, eye, target, up)
-  mat3.fromMat4(scratch0, scratch0)
-  quat.fromMat3(rotation, scratch0)
-
-  // view(out)
-  if (!out) out = mat4.create()
-  scratch1[0] = scratch1[1] = 0.0
-  scratch1[2] = -distance
-  mat4.fromRotationTranslation(out,
-      quat.conjugate(scratch0, rotation),
-      scratch1)
-  return out
+  return [-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, -1, 1]
 }
 
 shell.on("gl-render", function() {
