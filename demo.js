@@ -93,6 +93,10 @@ function simpleCameraView(out) {
 var cameraFOVdegrees = 45
 var cameraFOVradians = cameraFOVdegrees * Math.PI / 180
 
+global.toggle = function toggle() {
+  element.style.display = (element.style.display === 'none' ? '' : 'none')
+};
+
 shell.on("gl-render", function() {
   var proj = mat4.perspective(mat4.create(), cameraFOVradians, shell.width/shell.height, 0.1, 1000.0)
   var view = camera.view()
@@ -123,8 +127,8 @@ shell.on("gl-render", function() {
   //var matrixWorldInverse = mat4.create()
   //mat4.invert(matrixWorldInverse, view)
   //mat4.transpose(matrixWorldInverse, matrixWorldInverse)
-  element.style.width = (shell.width / 4) + 'px'
-  element.style.height = (shell.height / 4) + 'px'
+  element.style.width = shell.width + 'px'
+  element.style.height = shell.height + 'px'
  
   // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
   // TODO: matrix transformation instead?
