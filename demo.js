@@ -72,8 +72,6 @@ void main() {\
 
 var model = mat4.create()
 mat4.translate(model, model, [0,0,10])
-mat4.scale(model, model, [4,4,4])
-
 var projViewModel = mat4.create()
 
 shell.on("gl-render", function() {
@@ -101,5 +99,6 @@ shell.on("gl-render", function() {
   cssWorld.style.height = shell.height + 'px'
 
   // CSS element
-  element.style.transform = matrixToCSS(view) // TODO
+  //element.style.transform = 'translateZ(' + fovPx + 'px) ' + matrixToCSS(view) + ' translate3d(' + (shell.width/2) + 'px, ' + (shell.height/2) + 'px, 0)'
+  element.style.transform = matrixToCSS(view)
 })
