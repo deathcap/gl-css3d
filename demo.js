@@ -119,6 +119,7 @@ shell.on("gl-render", function() {
   var screenHeight = shell.height
   var fovPx = 0.5 / Math.tan(cameraFOVradians / 2) * screenHeight
   cssWorld.style.perspective = fovPx + 'px'
+  //cssWorld.style.perspectiveOrigin = '50% 50%' // already is the default
   cssWorld.style.width = shell.width + 'px'
   cssWorld.style.height = shell.height + 'px'
 
@@ -132,10 +133,11 @@ shell.on("gl-render", function() {
  
   // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
   // TODO: matrix transformation instead?
-  view[1] = -view[1]
-  view[5] = -view[5]
-  view[9] = -view[9]
-  view[13] = -view[13]
+  var cssMatrix = mat4.clone(view)
+  cssMatrix[1] = -cssMatrix[1]
+  cssMatrix[5] = -cssMatrix[5]
+  cssMatrix[9] = -cssMatrix[9]
+  cssMatrix[13] = -cssMatrix[13]
 
-  element.style.transform = 'translate3d(0,0,'+fovPx+'px) ' + matrixToCSS(view) + ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
+  element.style.transform = 'translate3d(0,0,'+fovPx+'px) ' + matrixToCSS(cssMatrix) + ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
 })
