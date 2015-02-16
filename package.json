@@ -1,6 +1,6 @@
 {
   "name": "gl-css3d",
-  "description": "",
+  "description": "sync CSS 3D transformations to a WebGL scene",
   "version": "0.0.1",
   "main": "gl-css3d.js",
   "repository": {
