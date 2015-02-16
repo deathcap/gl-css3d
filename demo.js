@@ -57,17 +57,19 @@ shell.on("gl-init", function() {
 
   shader = glslify({
     inline: true,
-    vertex: "/* voxel-decals vertex shader */\
+    vertex: "\
 attribute vec3 position;\
 \
-uniform mat4 projViewModel;\
+uniform mat4 projection;\
+uniform mat4 view;\
+uniform mat4 model;\
 varying vec4 vColor;\
 \
 void main() {\
-  gl_Position = projViewModel * vec4(position, 1.0);\
+  gl_Position = projection * view * model * vec4(position, 1.0);\
 }",
 
-  fragment: "/* voxel-decals fragment shader */\
+  fragment: "\
 precision highp float;\
 varying vec4 vColor;\
 \
@@ -78,11 +80,7 @@ void main() {\
 })
 
 var model = mat4.create()
-
-var projViewModel = mat4.create()
-
-var scratch0 = new Float32Array(16)
-var scratch1 = new Float32Array(16)
+var cssMatrix = mat4.create()
 
 // based on orbit-camera
 function simpleCameraView(out) {
@@ -110,10 +108,9 @@ shell.on("gl-render", function() {
   shader.bind()
   shader.attributes.position.location = 0
 
-  mat4.multiply(projViewModel, proj, view)
-  mat4.multiply(projViewModel, projViewModel, model)
-
-  shader.uniforms.projViewModel = projViewModel
+  shader.uniforms.projection = proj
+  shader.uniforms.view = view
+  shader.uniforms.model = model
 
   mesh.bind(shader)
   mesh.draw()
@@ -127,16 +124,11 @@ shell.on("gl-render", function() {
   domElement.style.height = shell.height + 'px'
 
   // CSS cameraElement
-  //cameraElement.style.transform = 'translateZ(' + fovPx + 'px) ' + matrixToCSS(view) + ' translate3d(' + (shell.width/2) + 'px, ' + (shell.height/2) + 'px, 0)'
-  //var matrixWorldInverse = mat4.create()
-  //mat4.invert(matrixWorldInverse, view)
-  //mat4.transpose(matrixWorldInverse, matrixWorldInverse)
   cameraElement.style.width = shell.width + 'px'
   cameraElement.style.height = shell.height + 'px'
 
+  mat4.scale(cssMatrix, view, [1/shell.width * 2, 1/shell.height * 2, 1])
   // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
-  var cssMatrix = mat4.clone(view)
-  mat4.scale(cssMatrix, cssMatrix, [1/shell.width * 2, 1/shell.height * 2, 1])
   // TODO: matrix transformation instead?
   cssMatrix[1] = -cssMatrix[1]
   cssMatrix[5] = -cssMatrix[5]
