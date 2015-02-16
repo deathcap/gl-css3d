@@ -11,8 +11,9 @@ var quat = require("gl-matrix-quat")
 var createMesh = require("gl-mesh")
 var glslify = require("glslify")
 
-var texture
-var positions = new Array(100)
+// render a yellow plane using WebGL behind the CSS3D element, for debugging
+var SHOW_GL_PLANE = false
+
 var mesh
 var shader
 
@@ -44,9 +45,9 @@ cameraElement.appendChild(iframe)
 domElement.appendChild(cameraElement)
 document.body.appendChild(domElement)
 
+if (SHOW_GL_PLANE)
 shell.on("gl-init", function() {
   var gl = shell.gl
-  texture = renderText(gl, "Billboard")
 
   mesh = createMesh(gl,
       [
@@ -66,11 +67,10 @@ attribute vec3 position;\
 \
 uniform mat4 projection;\
 uniform mat4 view;\
-uniform mat4 model;\
 varying vec4 vColor;\
 \
 void main() {\
-  gl_Position = projection * view * model * vec4(position, 1.0);\
+  gl_Position = projection * view * vec4(position, 1.0);\
 }",
 
   fragment: "\
@@ -83,7 +83,6 @@ void main() {\
 
 })
 
-var model = mat4.create()
 var cssMatrix = mat4.create()
 
 // based on orbit-camera
@@ -111,16 +110,17 @@ shell.on("gl-render", function() {
   var view = camera.view()
   //var view = simpleCameraView()
 
-  shader.bind()
-  shader.attributes.position.location = 0
+  if (SHOW_GL_PLANE) {
+    shader.bind()
+    shader.attributes.position.location = 0
 
-  shader.uniforms.projection = proj
-  shader.uniforms.view = view
-  shader.uniforms.model = model
+    shader.uniforms.projection = proj
+    shader.uniforms.view = view
 
-  mesh.bind(shader)
-  mesh.draw()
-  mesh.unbind()
+    mesh.bind(shader)
+    mesh.draw()
+    mesh.unbind()
+  }
 
   // CSS world perspective TODO: only on gl-resize -- this doesn't change often
   var fovPx = 0.5 / Math.tan(cameraFOVradians / 2) * shell.height
@@ -147,7 +147,6 @@ shell.on("gl-render", function() {
   cssMatrix[5] = -cssMatrix[5]
   cssMatrix[9] = -cssMatrix[9]
   cssMatrix[13] = -cssMatrix[13]
-
 
   cameraElement.style.transform = 'translateZ('+fovPx+'px) ' + matrixToCSS(cssMatrix) //+ ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
 })
