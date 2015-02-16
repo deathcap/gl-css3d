@@ -13,15 +13,12 @@
   },
   "dependencies": {
     "matrix-to-css": "^1.0.4",
-    "gl-matrix-quat": "^2.2.1-npm",
-    "gl-mat3": "^1.0.0",
-    "gl-vec3": "^1.0.3"
+    "gl-mat4": "^1.1.2"
   },
   "license": "MIT",
   "devDependencies": {
     "gl-now": "^1.4.0",
     "game-shell-orbit-camera": "^1.0.0",
-    "gl-mat4": "^1.1.2",
     "gl-mesh": "^0.1.0",
     "glslify": "^1.6.0"
   },
