@@ -135,8 +135,8 @@ shell.on("gl-render", function() {
 
   var planeWidth = 2
   var planeHeight = 2
-  var scaleX = planeWidth / shell.width
-  var scaleY = planeHeight / shell.height
+  var scaleX = -planeWidth / shell.width
+  var scaleY = -planeHeight / shell.height
   var scaleZ = 1
   mat4.scale(cssMatrix, view, [scaleX, scaleY, scaleZ])
 
