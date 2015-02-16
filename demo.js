@@ -78,6 +78,10 @@ camera.lookAt([0,0,-3], [0,0,0], [0,1,0])
 // a slight rotation for effect
 camera.rotate([1/4,-1/4,0], [0,0,0])
 
+shell.on('gl-resize', function(width, height) {
+  css3d.updatePerspective(cameraFOVradians, shell.width, shell.height);
+});
+
 shell.on("gl-render", function() {
   var proj = mat4.perspective(mat4.create(), cameraFOVradians, shell.width/shell.height, 0.1, 1000.0)
   var view = camera.view()
@@ -95,6 +99,5 @@ shell.on("gl-render", function() {
     mesh.unbind()
   }
 
-  css3d.updatePerspective(cameraFOVradians, shell.width, shell.height);
   css3d.updateView(view, cameraFOVradians);
 })
