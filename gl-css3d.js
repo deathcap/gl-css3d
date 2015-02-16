@@ -51,7 +51,7 @@ function GLCSS3D(element, opts) {
 GLCSS3D.prototype.ginit = function(gl) {
   this.cutoutMesh = createMesh(gl,
         [
-        [0, 1, 2],
+        [2, 1, 0],
         [3, 1, 2]
          ],
         { "position": [
