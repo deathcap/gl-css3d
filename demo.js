@@ -127,7 +127,15 @@ shell.on("gl-render", function() {
   cameraElement.style.width = shell.width + 'px'
   cameraElement.style.height = shell.height + 'px'
 
-  mat4.scale(cssMatrix, view, [1/shell.width * 2, 1/shell.height * 2, 1])
+  var percentBorder = 0.05 // TODO: ?
+  var planeWidth = 2
+  var planeHeight = 2
+  var scaleX = (1 + percentBorder) * (planeWidth / shell.width)
+  var scaleY = (1 + percentBorder) * (planeHeight / shell.height)
+  var scaleZ = 1
+  mat4.scale(cssMatrix, view, [scaleX, scaleY, scaleZ])
+
+  //mat4.scale(cssMatrix, view, [1/shell.width * 2, 1/shell.height * 2, 1])
   // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
   // TODO: matrix transformation instead?
   cssMatrix[1] = -cssMatrix[1]
@@ -135,15 +143,6 @@ shell.on("gl-render", function() {
   cssMatrix[9] = -cssMatrix[9]
   cssMatrix[13] = -cssMatrix[13]
 
-  /*
-  var percentBorder = 0.05
-  var planeWidth = 1
-  var planeHeight = 1
-  var scaleX = (1 + percentBorder) * (shell.width / planeWidth)
-  var scaleY = (1 + percentBorder) * (shell.height / planeHeight)
-  var scaleZ = 1
-  mat4.scale(cssMatrix, cssMatrix, [scaleX, scaleY, scaleZ])
-  */
 
   cameraElement.style.transform = 'translateZ('+fovPx+'px) ' + matrixToCSS(cssMatrix) //+ ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
 })
