@@ -8,11 +8,19 @@ var createMesh = require("gl-mesh")
 var glslify = require("glslify")
 
 // render a yellow plane using WebGL behind the CSS3D element, for debugging
-var SHOW_GL_PLANE = true
+var SHOW_GL_PLANE = false
+
 var mesh
 var shader
 
-var css3d = createCSS3D();
+var iframe = document.createElement('iframe');
+iframe.src = 'http://browserify.org';
+//iframe.src = 'data:text/html,<body bgcolor=purple>';
+//iframe.style.backgroundColor = 'purple';
+iframe.style.width = '100%';
+iframe.style.height = '100%';
+
+var css3d = createCSS3D(iframe);
 
 // based on orbit-camera
 function simpleCameraView(out) {
