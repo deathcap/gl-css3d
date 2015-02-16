@@ -9,49 +9,10 @@ var glslify = require("glslify")
 
 // render a yellow plane using WebGL behind the CSS3D element, for debugging
 var SHOW_GL_PLANE = true
-
 var mesh
 var shader
 
 var css3d = createCSS3D();
-
-if (SHOW_GL_PLANE)
-shell.on("gl-init", function() {
-  var gl = shell.gl
-
-  mesh = createMesh(gl,
-      [
-      [0, 1, 2],
-      [3, 1, 2]
-       ],
-      { "position": [
-        [-1, -1, 0],
-        [-1, 1, 0],
-        [1, -1, 0],
-        [1, 1, 0]] })
-
-  shader = glslify({
-    inline: true,
-    vertex: "\
-attribute vec3 position;\
-\
-uniform mat4 projection;\
-uniform mat4 view;\
-varying vec4 vColor;\
-\
-void main() {\
-  gl_Position = projection * view * vec4(position, 1.0);\
-}",
-
-  fragment: "\
-precision highp float;\
-varying vec4 vColor;\
-\
-void main() {\
-  gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\
-}"})(gl)
-
-})
 
 // based on orbit-camera
 function simpleCameraView(out) {
@@ -66,12 +27,6 @@ function simpleCameraView(out) {
 
 var cameraFOVdegrees = 45
 var cameraFOVradians = cameraFOVdegrees * Math.PI / 180
-
-/* // for testing, toggle CSS visibility (useful as it overlaps)
-window.setInterval(function() {
-  cameraElement.style.display = (cameraElement.style.display === 'none' ? '' : 'none')
-}, 500)
-*/
 
 // eye, target, up
 camera.lookAt([0,0,-3], [0,0,0], [0,1,0])
@@ -99,5 +54,50 @@ shell.on("gl-render", function() {
     mesh.unbind()
   }
 
-  css3d.updateView(view, cameraFOVradians);
+  css3d.updateView(view);
 })
+
+if (SHOW_GL_PLANE) {
+  shell.on("gl-init", function() {
+    var gl = shell.gl
+
+    mesh = createMesh(gl,
+        [
+        [0, 1, 2],
+        [3, 1, 2]
+         ],
+        { "position": [
+          [-1, -1, 0],
+          [-1, 1, 0],
+          [1, -1, 0],
+          [1, 1, 0]] })
+
+    shader = glslify({
+      inline: true,
+      vertex: "\
+  attribute vec3 position;\
+  \
+  uniform mat4 projection;\
+  uniform mat4 view;\
+  varying vec4 vColor;\
+  \
+  void main() {\
+    gl_Position = projection * view * vec4(position, 1.0);\
+  }",
+
+    fragment: "\
+  precision highp float;\
+  varying vec4 vColor;\
+  \
+  void main() {\
+    gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\
+  }"})(gl)
+
+  });
+}
+
+/* // for testing, toggle CSS visibility (useful as it overlaps)
+window.setInterval(function() {
+  cameraElement.style.display = (cameraElement.style.display === 'none' ? '' : 'none')
+}, 500)
+*/

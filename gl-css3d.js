@@ -63,7 +63,7 @@ GLCSS3D.prototype.updatePerspective = function(cameraFOVradians, width, height) 
 
 var cssMatrix = mat4.create();
 
-GLCSS3D.prototype.updateView = function(view, cameraFOVradians) {
+GLCSS3D.prototype.updateView = function(view) {
   var domElement = this.domElement;
   var cameraElement = this.cameraElement;
   var width = this.width;
