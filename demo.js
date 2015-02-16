@@ -1,6 +1,6 @@
 "use strict"
 
-var css3d = require('./');
+var createCSS3D = require('./');
 var shell = require("gl-now")({clearColor: [0.2, 0.4, 0.8, 1.0]})
 var camera = require("game-shell-orbit-camera")(shell)
 var mat4 = require("gl-mat4")
@@ -13,7 +13,7 @@ var SHOW_GL_PLANE = true
 var mesh
 var shader
 
-css3d.createCSS3D();
+var css3d = createCSS3D();
 
 if (SHOW_GL_PLANE)
 shell.on("gl-init", function() {
@@ -95,5 +95,5 @@ shell.on("gl-render", function() {
     mesh.unbind()
   }
 
-  css3d.updateCSS3D(view, cameraFOVradians, shell.width, shell.height);
+  css3d.update(view, cameraFOVradians, shell.width, shell.height);
 })

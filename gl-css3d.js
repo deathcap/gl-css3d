@@ -3,11 +3,12 @@
 var matrixToCSS = require('matrix-to-css');
 var mat4 = require('gl-mat4');
 
-var domElement;
-var cameraElement;
+module.exports = function(opts) {
+  return new GLCSS3D(opts);
+};
 
-var createCSS3D = function() {
-  domElement = document.createElement('div');
+function GLCSS3D() {
+  var domElement = document.createElement('div');
   domElement.style.transformStyle = 'preserve-3d';
   domElement.style.overflow = 'hidden';
   domElement.style.pointerEvents = 'none';
@@ -18,13 +19,13 @@ var createCSS3D = function() {
   domElement.style.margin = '0';
   domElement.style.padding = '0';
 
-  cameraElement = document.createElement('div');
+  var cameraElement = document.createElement('div');
   cameraElement.style.position = 'absolute';
   cameraElement.style.transformStyle = 'preserve-3d';
   //cameraElement.style.display = 'none';
   cameraElement.style.pointerEvents = 'auto'; // allow mouse interaction
 
-  var iframe = document.createElement('iframe');
+  var iframe = document.createElement('iframe'); // TODO: make this an option
   iframe.src = 'http://browserify.org';
   //iframe.src = 'data:text/html,<body bgcolor=purple>';
   //iframe.style.backgroundColor = 'purple';
@@ -34,11 +35,16 @@ var createCSS3D = function() {
 
   domElement.appendChild(cameraElement);
   document.body.appendChild(domElement);
-};
+
+  this.domElement = domElement;
+  this.cameraElement = cameraElement;
+}
 
 var cssMatrix = mat4.create();
 
-var updateCSS3D = function(view, cameraFOVradians, width, height) {
+GLCSS3D.prototype.update = function(view, cameraFOVradians, width, height) {
+  var domElement = this.domElement;
+  var cameraElement = this.cameraElement;
 
   // CSS world perspective TODO: only on gl-resize -- this doesn't change often
   var fovPx = 0.5 / Math.tan(cameraFOVradians / 2) * height;
@@ -69,7 +75,3 @@ var updateCSS3D = function(view, cameraFOVradians, width, height) {
   cameraElement.style.transform = 'translateZ('+fovPx+'px) ' + matrixToCSS(cssMatrix);
 };
 
-module.exports = {
-  createCSS3D: createCSS3D,
-  updateCSS3D: updateCSS3D
-};
