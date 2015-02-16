@@ -135,8 +135,9 @@ shell.on("gl-render", function() {
   cameraElement.style.height = shell.height + 'px'
 
   // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
-  // TODO: matrix transformation instead?
   var cssMatrix = mat4.clone(view)
+  mat4.scale(cssMatrix, cssMatrix, [1/shell.width, 1/shell.height, 1])
+  // TODO: matrix transformation instead?
   cssMatrix[1] = -cssMatrix[1]
   cssMatrix[5] = -cssMatrix[5]
   cssMatrix[9] = -cssMatrix[9]
@@ -152,5 +153,5 @@ shell.on("gl-render", function() {
   mat4.scale(cssMatrix, cssMatrix, [scaleX, scaleY, scaleZ])
   */
 
-  cameraElement.style.transform = 'translate3d(0,0,'+fovPx+'px) ' + matrixToCSS(cssMatrix) + ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
+  cameraElement.style.transform = 'translate3d(0,0,'+fovPx+'px) ' + matrixToCSS(cssMatrix) //+ ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
 })
