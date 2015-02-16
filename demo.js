@@ -22,6 +22,10 @@ domElement.style.overflow = 'hidden'
 domElement.style.pointerEvents = 'none'
 domElement.style.position = 'absolute'
 domElement.style.zIndex = '1' // above WebGL canvas
+domElement.style.top = '0'
+domElement.style.left = '0'
+domElement.style.margin = '0'
+domElement.style.padding = '0'
 
 var cameraElement = document.createElement('div')
 cameraElement.style.position = 'absolute'
@@ -127,11 +131,10 @@ shell.on("gl-render", function() {
   cameraElement.style.width = shell.width + 'px'
   cameraElement.style.height = shell.height + 'px'
 
-  var percentBorder = 0.05 // TODO: ?
   var planeWidth = 2
   var planeHeight = 2
-  var scaleX = (1 + percentBorder) * (planeWidth / shell.width)
-  var scaleY = (1 + percentBorder) * (planeHeight / shell.height)
+  var scaleX = planeWidth / shell.width
+  var scaleY = planeHeight / shell.height
   var scaleZ = 1
   mat4.scale(cssMatrix, view, [scaleX, scaleY, scaleZ])
 
