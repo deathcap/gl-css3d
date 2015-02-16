@@ -44,6 +44,8 @@ function GLCSS3D(element, opts) {
   //this.tint = opts.tint || [0.5,0,0,0]; // reddish tint, etc.. useful? (note gl blending mode)
   this.tint = opts.tint || [0,0,0,0]; // fully transparent
   this.blend = (opts.blend !== undefined) ? opts.blend : false; // overwrite transparent color
+  this.flipX = (opts.flipX !== undefined) ? opts.flipX : true;
+  this.flipY = (opts.flipY !== undefined) ? opts.flipY : true;
 
   this.cutoutMesh = null;
   this.cutoutShader = null;
@@ -107,10 +109,12 @@ GLCSS3D.prototype.updatePerspective = function(cameraFOVradians, width, height) 
 
 var cssMatrix = mat4.create();
 
-GLCSS3D.prototype.updateView= function(view) {
-  var scaleX = -this.planeWidth / this.width;
-  var scaleY = -this.planeHeight / this.height;
+GLCSS3D.prototype.updateView = function(view) {
+  var scaleX = this.planeWidth / this.width;
+  var scaleY = this.planeHeight / this.height;
   var scaleZ = 1;
+  if (this.flipX) scaleX = -scaleX;
+  if (this.flipY) scaleY = -scaleY;
   mat4.scale(cssMatrix, view, [scaleX, scaleY, scaleZ]);
 
   // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
