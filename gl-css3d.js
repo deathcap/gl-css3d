@@ -72,8 +72,7 @@ GLCSS3D.prototype.ginit = function(gl) {
     gl_Position = projection * view * vec4(position, 1.0);\
   }",
 
-    // always returns alpha 0 so CSS element below is visible through
-    // TODO: configurable color? allows adding a tint
+    // color it all transparent so CSS element is visible through
     fragment: "\
   precision highp float;\
   uniform vec4 color;\
@@ -109,7 +108,6 @@ GLCSS3D.prototype.updateView= function(view) {
   var scaleZ = 1;
   mat4.scale(cssMatrix, view, [scaleX, scaleY, scaleZ]);
 
-  //mat4.scale(cssMatrix, view, [1/width * 2, 1/height * 2, 1])
   // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
   // TODO: matrix transformation instead?
   cssMatrix[1] = -cssMatrix[1];

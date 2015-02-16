@@ -11,13 +11,15 @@ Usage:
     // pass an HTML DOM element node, such as an <iframe>
     var css3d = createCSS3D(htmlElement, opts);
 
-    // when the GL system is available (gl-init), initialize:
+    // assuming you are using stackgl gl-now/game-shell:
+
+    // in the gl-init callback:
     css3d.ginit(gl)
 
-    // when the GL scene is resized (gl-resize), update the perspective matrix:
+    // in the gl-resize callback:
     css3d.updatePerspective(cameraFOVradians, shell_width, shell_height);
 
-    // when the GL scene is rendered (gl-render), update the CSS3D view matrix and draw the GL cutout:
+    // in the gl-render callback:
     css3d.render(view, proj);
 
 For an example embedding an iframe run `npm start`. The iframe accepts pointer events

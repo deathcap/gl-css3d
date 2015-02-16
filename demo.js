@@ -2,7 +2,7 @@
 
 var createCSS3D = require('./');
 var shell = require("gl-now")({clearColor: [0.2, 0.4, 0.8, 1.0]})
-var camera = require("game-shell-orbit-camera")(shell) // TODO: get working with disabled pointerEvents :|
+var camera = require("game-shell-orbit-camera")(shell)
 var mat4 = require("gl-mat4")
 
 var iframe = document.createElement('iframe');
@@ -13,17 +13,6 @@ iframe.style.width = '100%';
 iframe.style.height = '100%';
 
 var css3d = createCSS3D(iframe);
-
-// based on orbit-camera
-function simpleCameraView(out) {
-  if (!out) out = mat4.create()
-
-  var quaternion = [0,1,0,0]
-  var translation = [0,0,-1]
-  mat4.fromRotationTranslation(out, quaternion, translation)
-
-  return out
-}
 
 var cameraFOVdegrees = 45
 var cameraFOVradians = cameraFOVdegrees * Math.PI / 180
@@ -60,13 +49,6 @@ shell.on('gl-resize', function(width, height) {
 shell.on('gl-render', function() {
   var proj = mat4.perspective(mat4.create(), cameraFOVradians, shell.width/shell.height, 0.1, 1000.0)
   var view = camera.view()
-  //var view = simpleCameraView()
 
   css3d.render(view, proj);
 })
-
-/* // for testing, toggle CSS visibility (useful as it overlaps)
-window.setInterval(function() {
-  cameraElement.style.display = (cameraElement.style.display === 'none' ? '' : 'none')
-}, 500)
-*/
