@@ -153,5 +153,5 @@ shell.on("gl-render", function() {
   mat4.scale(cssMatrix, cssMatrix, [scaleX, scaleY, scaleZ])
   */
 
-  cameraElement.style.transform = 'translate3d(0,0,'+fovPx+'px) ' + matrixToCSS(cssMatrix) //+ ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
+  cameraElement.style.transform = 'translateZ('+fovPx+'px) ' + matrixToCSS(cssMatrix) //+ ' translate3d('+(shell.width/2)+'px, '+(shell.height/2)+'px, 0)'
 })
