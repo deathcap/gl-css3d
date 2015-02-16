@@ -41,6 +41,8 @@ function GLCSS3D(element, opts) {
 
   this.planeWidth = opts.planeWidth || 2; // assume -1 to +1
   this.planeHeight = opts.planeHeight || 2;
+  //this.tint = opts.tint || [0.5,0,0,0]; // reddish tint, etc.. useful? (note gl blending mode)
+  this.tint = opts.tint || [0,0,0,0]; // fully transparent
 
   this.cutoutMesh = null;
   this.cutoutShader = null;
@@ -74,10 +76,10 @@ GLCSS3D.prototype.ginit = function(gl) {
     // TODO: configurable color? allows adding a tint
     fragment: "\
   precision highp float;\
-  varying vec4 vColor;\
+  uniform vec4 color;\
   \
   void main() {\
-    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);\
+    gl_FragColor = color;\
   }"})(gl)
 };
 
@@ -124,6 +126,7 @@ GLCSS3D.prototype.renderCutout = function(view, proj) {
 
   this.cutoutShader.uniforms.projection = proj
   this.cutoutShader.uniforms.view = view
+  this.cutoutShader.uniforms.color = this.tint
 
   this.cutoutMesh.bind(this.cutoutShader)
   this.cutoutMesh.draw()
