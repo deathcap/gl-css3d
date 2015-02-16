@@ -137,7 +137,6 @@ shell.on("gl-render", function() {
   // three.js CSS3Renderer getCameraCSSMatrix inverts these to fix flipped rotation orientation
   var cssMatrix = mat4.clone(view)
   mat4.scale(cssMatrix, cssMatrix, [1/shell.width * 2, 1/shell.height * 2, 1])
-  mat4.translate(cssMatrix, cssMatrix, [window.dx || -55, window.dy || -3, window.dz || 0]) // TODO: fix offsets; dependent on camera distance
   // TODO: matrix transformation instead?
   cssMatrix[1] = -cssMatrix[1]
   cssMatrix[5] = -cssMatrix[5]
