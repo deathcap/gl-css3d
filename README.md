@@ -11,11 +11,14 @@ Usage:
     // pass an HTML DOM element node, such as an <iframe>
     var css3d = createCSS3D(htmlElement, opts);
 
-    // when the GL scene is resized, update the perspective matrix:
+    // when the GL system is available (gl-init), initialize:
+    css3d.ginit(gl)
+
+    // when the GL scene is resized (gl-resize), update the perspective matrix:
     css3d.updatePerspective(cameraFOVradians, shell_width, shell_height);
 
-    // when the GL scene is rendered, update the view matrix:
-    css3d.updateView(view);
+    // when the GL scene is rendered (gl-render), update the CSS3D view matrix and draw the GL cutout:
+    css3d.render(view, proj);
 
 For an example embedding an iframe run `npm start`. Drag over
 the scene not on the iframe or scroll to move the camera (uses

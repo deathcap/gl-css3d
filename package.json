@@ -15,6 +15,8 @@
     "start": "wzrd demo.js"
   },
   "dependencies": {
+    "glslify": "^1.6.0",
+    "gl-mesh": "^0.1.0",
     "matrix-to-css": "^1.0.4",
     "gl-mat4": "^1.1.2"
   },
@@ -22,8 +24,6 @@
   "devDependencies": {
     "gl-now": "^1.4.0",
     "game-shell-orbit-camera": "^1.0.0",
-    "gl-mesh": "^0.1.0",
-    "glslify": "^1.6.0",
     "wzrd": "^1.2.1"
   },
   "browserify": {

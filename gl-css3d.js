@@ -2,6 +2,8 @@
 
 var matrixToCSS = require('matrix-to-css');
 var mat4 = require('gl-mat4');
+var createMesh = require('gl-mesh');
+var glslify = require('glslify');
 
 module.exports = function(element, opts) {
   return new GLCSS3D(element, opts);
@@ -39,7 +41,45 @@ function GLCSS3D(element, opts) {
 
   this.planeWidth = opts.planeWidth || 2; // assume -1 to +1
   this.planeHeight = opts.planeHeight || 2;
+
+  this.cutoutMesh = null;
+  this.cutoutShader = null;
 }
+
+GLCSS3D.prototype.ginit = function(gl) {
+  this.cutoutMesh = createMesh(gl,
+        [
+        [0, 1, 2],
+        [3, 1, 2]
+         ],
+        { "position": [
+          [-1, -1, 0],
+          [-1, 1, 0],
+          [1, -1, 0],
+          [1, 1, 0]] })
+
+  this.cutoutShader = glslify({
+      inline: true,
+      vertex: "\
+  attribute vec3 position;\
+  \
+  uniform mat4 projection;\
+  uniform mat4 view;\
+  \
+  void main() {\
+    gl_Position = projection * view * vec4(position, 1.0);\
+  }",
+
+    // always returns alpha 0 so CSS element below is visible through
+    // TODO: configurable color? allows adding a tint
+    fragment: "\
+  precision highp float;\
+  varying vec4 vColor;\
+  \
+  void main() {\
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);\
+  }"})(gl)
+};
 
 GLCSS3D.prototype.updatePerspective = function(cameraFOVradians, width, height) {
   // CSS world perspective - only needs to change on gl-resize (not each rendering tick)
@@ -61,7 +101,7 @@ GLCSS3D.prototype.updatePerspective = function(cameraFOVradians, width, height) 
 
 var cssMatrix = mat4.create();
 
-GLCSS3D.prototype.updateView = function(view) {
+GLCSS3D.prototype.updateView= function(view) {
   var scaleX = -this.planeWidth / this.width;
   var scaleY = -this.planeHeight / this.height;
   var scaleZ = 1;
@@ -78,3 +118,20 @@ GLCSS3D.prototype.updateView = function(view) {
   this.cameraElement.style.transform = this.cameraElement.style.webkitTransform = 'translateZ('+this.fovPx+'px) ' + matrixToCSS(cssMatrix);
 };
 
+GLCSS3D.prototype.renderCutout = function(view, proj) {
+  this.cutoutShader.bind()
+  this.cutoutShader.attributes.position.location = 0
+
+  this.cutoutShader.uniforms.projection = proj
+  this.cutoutShader.uniforms.view = view
+
+  this.cutoutMesh.bind(this.cutoutShader)
+  this.cutoutMesh.draw()
+  this.cutoutMesh.unbind()
+};
+
+
+GLCSS3D.prototype.render = function(view, proj) {
+  this.updateView(view);
+  this.renderCutout(view, proj);
+};

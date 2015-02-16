@@ -2,16 +2,8 @@
 
 var createCSS3D = require('./');
 var shell = require("gl-now")({clearColor: [0.2, 0.4, 0.8, 1.0]})
-var camera = require("game-shell-orbit-camera")(shell)
+var camera = require("game-shell-orbit-camera")(shell) // TODO: get working with disabled pointerEvents :|
 var mat4 = require("gl-mat4")
-var createMesh = require("gl-mesh")
-var glslify = require("glslify")
-
-// render a plane using WebGL behind the CSS3D element, for debugging
-var SHOW_GL_PLANE = true
-
-var mesh
-var shader
 
 var iframe = document.createElement('iframe');
 iframe.src = 'http://browserify.org';
@@ -41,6 +33,14 @@ camera.lookAt([0,0,-3], [0,0,0], [0,1,0])
 // a slight rotation for effect
 camera.rotate([1/4,-1/4,0], [0,0,0])
 
+shell.on('gl-init', function() {
+  // allow pointer events to pass through canvas to CSS world behind
+  shell.canvas.style.pointerEvents = 'none';
+  shell.canvas.parentElement.style.pointerEvents = 'none';
+
+  css3d.ginit(shell.gl);
+});
+
 shell.on('gl-resize', function(width, height) {
   css3d.updatePerspective(cameraFOVradians, shell.width, shell.height);
 });
@@ -50,60 +50,8 @@ shell.on('gl-render', function() {
   var view = camera.view()
   //var view = simpleCameraView()
 
-  if (SHOW_GL_PLANE) {
-    shader.bind()
-    shader.attributes.position.location = 0
-
-    shader.uniforms.projection = proj
-    shader.uniforms.view = view
-
-    mesh.bind(shader)
-    mesh.draw()
-    mesh.unbind()
-  }
-
-  css3d.updateView(view);
+  css3d.render(view, proj);
 })
-
-if (SHOW_GL_PLANE) {
-  shell.on("gl-init", function() {
-    var gl = shell.gl
-
-    mesh = createMesh(gl,
-        [
-        [0, 1, 2],
-        [3, 1, 2]
-         ],
-        { "position": [
-          [-1, -1, 0],
-          [-1, 1, 0],
-          [1, -1, 0],
-          [1, 1, 0]] })
-
-    shader = glslify({
-      inline: true,
-      vertex: "\
-  attribute vec3 position;\
-  \
-  uniform mat4 projection;\
-  uniform mat4 view;\
-  varying vec4 vColor;\
-  \
-  void main() {\
-    gl_Position = projection * view * vec4(position, 1.0);\
-  }",
-
-    // always returns alpha 0 so CSS element below is visible through
-    fragment: "\
-  precision highp float;\
-  varying vec4 vColor;\
-  \
-  void main() {\
-    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);\
-  }"})(gl)
-
-  });
-}
 
 /* // for testing, toggle CSS visibility (useful as it overlaps)
 window.setInterval(function() {
