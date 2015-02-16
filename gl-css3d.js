@@ -52,16 +52,18 @@ function GLCSS3D(element, opts) {
 
 GLCSS3D.prototype.ginit = function(gl) {
   this.gl = gl;
+  var hx = this.planeWidth / 2;
+  var hy = this.planeHeight / 2;
   this.cutoutMesh = createMesh(gl,
         [
         [2, 1, 0],
         [3, 1, 2]
          ],
         { "position": [
-          [-1, -1, 0],
-          [-1, 1, 0],
-          [1, -1, 0],
-          [1, 1, 0]] })
+          [-hx, -hy, 0],
+          [-hx, +hy, 0],
+          [+hx, -hy, 0],
+          [+hx, +hy, 0]] })
 
   this.cutoutShader = glslify({
       inline: true,
