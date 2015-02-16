@@ -40,22 +40,34 @@ function GLCSS3D() {
   this.cameraElement = cameraElement;
 }
 
-var cssMatrix = mat4.create();
-
-GLCSS3D.prototype.update = function(view, cameraFOVradians, width, height) {
+GLCSS3D.prototype.updatePerspective = function(cameraFOVradians, width, height) {
   var domElement = this.domElement;
   var cameraElement = this.cameraElement;
 
-  // CSS world perspective TODO: only on gl-resize -- this doesn't change often
+  // CSS world perspective - only needs to change on gl-resize (not each rendering tick)
   var fovPx = 0.5 / Math.tan(cameraFOVradians / 2) * height;
   domElement.style.perspective = fovPx + 'px';
   //domElement.style.perspectiveOrigin = '50% 50%'; // already is the default
   domElement.style.width = width + 'px';
   domElement.style.height = height + 'px';
 
+  this.fovPx = fovPx;
+
   // CSS cameraElement
   cameraElement.style.width = width + 'px';
   cameraElement.style.height = height + 'px';
+
+  this.width = width;
+  this.height = height;
+};
+
+var cssMatrix = mat4.create();
+
+GLCSS3D.prototype.updateView = function(view, cameraFOVradians) {
+  var domElement = this.domElement;
+  var cameraElement = this.cameraElement;
+  var width = this.width;
+  var height = this.height;
 
   var planeWidth = 2; // assume -1 to +1
   var planeHeight = 2;
@@ -72,6 +84,6 @@ GLCSS3D.prototype.update = function(view, cameraFOVradians, width, height) {
   cssMatrix[9] = -cssMatrix[9];
   cssMatrix[13] = -cssMatrix[13];
 
-  cameraElement.style.transform = 'translateZ('+fovPx+'px) ' + matrixToCSS(cssMatrix);
+  cameraElement.style.transform = 'translateZ('+this.fovPx+'px) ' + matrixToCSS(cssMatrix);
 };
 

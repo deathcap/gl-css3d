@@ -95,5 +95,6 @@ shell.on("gl-render", function() {
     mesh.unbind()
   }
 
-  css3d.update(view, cameraFOVradians, shell.width, shell.height);
+  css3d.updatePerspective(cameraFOVradians, shell.width, shell.height);
+  css3d.updateView(view, cameraFOVradians);
 })
