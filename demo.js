@@ -7,8 +7,8 @@ var mat4 = require("gl-mat4")
 var createMesh = require("gl-mesh")
 var glslify = require("glslify")
 
-// render a yellow plane using WebGL behind the CSS3D element, for debugging
-var SHOW_GL_PLANE = false
+// render a plane using WebGL behind the CSS3D element, for debugging
+var SHOW_GL_PLANE = true
 
 var mesh
 var shader
@@ -93,12 +93,13 @@ if (SHOW_GL_PLANE) {
     gl_Position = projection * view * vec4(position, 1.0);\
   }",
 
+    // always returns alpha 0 so CSS element below is visible through
     fragment: "\
   precision highp float;\
   varying vec4 vColor;\
   \
   void main() {\
-    gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);\
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);\
   }"})(gl)
 
   });

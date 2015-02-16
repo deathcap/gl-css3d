@@ -15,7 +15,7 @@ function GLCSS3D(element, opts) {
   domElement.style.overflow = 'hidden';
   domElement.style.pointerEvents = 'none';
   domElement.style.position = 'absolute';
-  domElement.style.zIndex = '1'; // above WebGL canvas
+  domElement.style.zIndex = '-1'; // below WebGL canvas
   domElement.style.top = '0';
   domElement.style.left = '0';
   domElement.style.margin = '0';
