@@ -11,7 +11,7 @@ function GLCSS3D(element, opts) {
   if (!element) throw new Error('gl-css3d requires element');
 
   var domElement = document.createElement('div');
-  domElement.style.transformStyle = 'preserve-3d';
+  domElement.style.transformStyle = domElement.style.webkitTransformStyle = 'preserve-3d';
   domElement.style.overflow = 'hidden';
   domElement.style.pointerEvents = 'none';
   domElement.style.position = 'absolute';
@@ -23,7 +23,7 @@ function GLCSS3D(element, opts) {
 
   var cameraElement = document.createElement('div');
   cameraElement.style.position = 'absolute';
-  cameraElement.style.transformStyle = 'preserve-3d';
+  cameraElement.style.transformStyle = cameraElement.style.webkitTransformStyle = 'preserve-3d';
   //cameraElement.style.display = 'none';
   cameraElement.style.pointerEvents = 'auto'; // allow mouse interaction
 
@@ -44,7 +44,7 @@ function GLCSS3D(element, opts) {
 GLCSS3D.prototype.updatePerspective = function(cameraFOVradians, width, height) {
   // CSS world perspective - only needs to change on gl-resize (not each rendering tick)
   var fovPx = 0.5 / Math.tan(cameraFOVradians / 2) * height;
-  this.domElement.style.perspective = fovPx + 'px';
+  this.domElement.style.perspective = this.domElement.style.webkitPerspective = fovPx + 'px';
   //domElement.style.perspectiveOrigin = '50% 50%'; // already is the default
   this.domElement.style.width = width + 'px';
   this.domElement.style.height = height + 'px';
@@ -75,6 +75,6 @@ GLCSS3D.prototype.updateView = function(view) {
   cssMatrix[9] = -cssMatrix[9];
   cssMatrix[13] = -cssMatrix[13];
 
-  this.cameraElement.style.transform = 'translateZ('+this.fovPx+'px) ' + matrixToCSS(cssMatrix);
+  this.cameraElement.style.transform = this.cameraElement.style.webkitTransform = 'translateZ('+this.fovPx+'px) ' + matrixToCSS(cssMatrix);
 };
 
