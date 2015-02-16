@@ -43,12 +43,15 @@ function GLCSS3D(element, opts) {
   this.planeHeight = opts.planeHeight || 2;
   //this.tint = opts.tint || [0.5,0,0,0]; // reddish tint, etc.. useful? (note gl blending mode)
   this.tint = opts.tint || [0,0,0,0]; // fully transparent
+  this.blend = (opts.blend !== undefined) ? opts.blend : false; // overwrite transparent color
 
   this.cutoutMesh = null;
   this.cutoutShader = null;
+  this.gl = null;
 }
 
 GLCSS3D.prototype.ginit = function(gl) {
+  this.gl = gl;
   this.cutoutMesh = createMesh(gl,
         [
         [2, 1, 0],
@@ -127,7 +130,11 @@ GLCSS3D.prototype.renderCutout = function(view, proj) {
   this.cutoutShader.uniforms.color = this.tint
 
   this.cutoutMesh.bind(this.cutoutShader)
+
+  if (!this.blend) this.gl.disable(this.gl.BLEND);
   this.cutoutMesh.draw()
+  if (!this.blend) this.gl.enable(this.gl.BLEND); // TODO: use module to push/restore gl state?
+
   this.cutoutMesh.unbind()
 };
 
