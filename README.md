@@ -20,11 +20,10 @@ Usage:
     // when the GL scene is rendered (gl-render), update the CSS3D view matrix and draw the GL cutout:
     css3d.render(view, proj);
 
-For an example embedding an iframe run `npm start`. Drag over
-the scene not on the iframe or scroll to move the camera (uses
+For an example embedding an iframe run `npm start`. The iframe accepts pointer events
+and can be interacted with as an ordinary webpage. Click the button to toggle mouse
+inputs to control the camera instead (drag to move, scroll to zoom; uses
 [game-shell-orbit-camera](https://github.com/mikolalysenko/game-shell-orbit-camera)).
-The iframe accepts pointer events and can be interacted with as an ordinary
-webpage.
 
 ## References
 

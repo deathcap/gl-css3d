@@ -41,6 +41,18 @@ shell.on('gl-init', function() {
   css3d.ginit(shell.gl);
 });
 
+var button = document.createElement('button');
+button.style.zIndex = 1;
+button.style.position = 'absolute';
+button.style.top = '0px';
+button.style.left = '0px';
+button.textContent = 'toggle mouse (iframe/camera)';
+button.addEventListener('click', function() {
+  shell.canvas.style.pointerEvents = (shell.canvas.style.pointerEvents == 'none' ? '' : 'none');
+  shell.canvas.parentElement.style.pointerEvents = (shell.canvas.parentElement.style.pointerEvents == 'none' ? '' : 'none');
+});
+document.body.appendChild(button);
+
 shell.on('gl-resize', function(width, height) {
   css3d.updatePerspective(cameraFOVradians, shell.width, shell.height);
 });
