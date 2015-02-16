@@ -7,7 +7,10 @@
     "type": "git",
     "url": "git@github.com:deathcap/gl-css3d.git"
   },
-  "keywords": [],
+  "keywords": [
+    "css3d",
+    "webgl"
+  ],
   "scripts": {
     "start": "wzrd demo.js"
   },
@@ -20,7 +23,8 @@
     "gl-now": "^1.4.0",
     "game-shell-orbit-camera": "^1.0.0",
     "gl-mesh": "^0.1.0",
-    "glslify": "^1.6.0"
+    "glslify": "^1.6.0",
+    "wzrd": "^1.2.1"
   },
   "browserify": {
     "transform": [
