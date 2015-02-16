@@ -4,6 +4,8 @@ var createCSS3D = require('./');
 var shell = require("gl-now")({clearColor: [0.2, 0.4, 0.8, 1.0]})
 var camera = require("game-shell-orbit-camera")(shell)
 var mat4 = require("gl-mat4")
+var bunny = require("bunny")
+var createMesh = require("gl-mesh")
 
 var iframe = document.createElement('iframe');
 iframe.src = 'http://browserify.org';
@@ -22,12 +24,16 @@ camera.lookAt([0,0,-3], [0,0,0], [0,1,0])
 // a slight rotation for effect
 camera.rotate([1/4,-1/4,0], [0,0,0])
 
+var bunnyMesh
+
 shell.on('gl-init', function() {
   // allow pointer events to pass through canvas to CSS world behind
   shell.canvas.style.pointerEvents = 'none';
   shell.canvas.parentElement.style.pointerEvents = 'none';
 
   css3d.ginit(shell.gl);
+
+  bunnyMesh = createMesh(shell.gl, bunny);
 });
 
 var button = document.createElement('button');
@@ -51,4 +57,8 @@ shell.on('gl-render', function() {
   var view = camera.view()
 
   css3d.render(view, proj);
+
+  bunnyMesh.bind(css3d.cutoutShader); // TODO: better shader
+  bunnyMesh.draw();
+  bunnyMesh.unbind();
 })
