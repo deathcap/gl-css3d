@@ -31,12 +31,12 @@ var cameraElement = document.createElement('div')
 cameraElement.style.position = 'absolute'
 cameraElement.style.transformStyle = 'preserve-3d'
 //cameraElement.style.display = 'none'
-//cameraElement.style.pointerEvents = 'auto' // allow mouse interaction
+cameraElement.style.pointerEvents = 'auto' // allow mouse interaction
 
-var iframe = document.createElement('div') // TODO: change back to iframe
-//iframe.src = 'http://browserify.org'
-//iframe.src = = 'data:text/html,<body bgcolor=purple>'
-iframe.style.backgroundColor = 'purple'
+var iframe = document.createElement('iframe')
+iframe.src = 'http://browserify.org'
+//iframe.src = 'data:text/html,<body bgcolor=purple>'
+//iframe.style.backgroundColor = 'purple'
 iframe.style.width = '100%'
 iframe.style.height = '100%'
 cameraElement.appendChild(iframe)
@@ -100,9 +100,11 @@ function simpleCameraView(out) {
 var cameraFOVdegrees = 45
 var cameraFOVradians = cameraFOVdegrees * Math.PI / 180
 
+/* // for testing, toggle CSS visibility (useful as it overlaps)
 window.setInterval(function() {
   cameraElement.style.display = (cameraElement.style.display === 'none' ? '' : 'none')
 }, 500)
+*/
 
 shell.on("gl-render", function() {
   var proj = mat4.perspective(mat4.create(), cameraFOVradians, shell.width/shell.height, 0.1, 1000.0)
