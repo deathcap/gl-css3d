@@ -46,6 +46,7 @@ function GLCSS3D(element, opts) {
   this.blend = (opts.blend !== undefined) ? opts.blend : false; // overwrite transparent color
   this.flipX = (opts.flipX !== undefined) ? opts.flipX : true;
   this.flipY = (opts.flipY !== undefined) ? opts.flipY : true;
+  this.backface = (opts.backface !== undefined) ? opts.backface : true;
 
   this.cutoutMesh = null;
   this.cutoutShader = null;
@@ -56,11 +57,20 @@ GLCSS3D.prototype.ginit = function(gl) {
   this.gl = gl;
   var hx = this.planeWidth / 2;
   var hy = this.planeHeight / 2;
-  this.cutoutMesh = createMesh(gl,
-        [
+
+  var indices =
+    // triangles forming a rectangle for the front face
+    [
         [2, 1, 0],
         [3, 1, 2]
-         ],
+    ];
+
+  if (this.backface) {
+    indices.push([0, 1, 2]);
+    indices.push([2, 1, 3]);
+  }
+
+  this.cutoutMesh = createMesh(gl, indices,
         { "position": [
           [-hx, -hy, 0],
           [-hx, +hy, 0],
