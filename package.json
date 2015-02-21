@@ -22,11 +22,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "gl-now": "^1.4.0",
-    "game-shell-orbit-camera": "^1.0.0",
-    "wzrd": "^1.2.1",
     "bunny": "^1.0.1",
-    "gl-mesh": "^0.1.0"
+    "game-shell-orbit-camera": "^1.0.0",
+    "gl-now": "^1.4.0",
+    "simple-3d-shader": "0.0.0",
+    "wzrd": "^1.2.1"
   },
   "browserify": {
     "transform": [
