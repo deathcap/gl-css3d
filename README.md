@@ -22,7 +22,8 @@ Usage:
     // in the gl-render callback:
     css3d.render(view, proj);
 
-For an example embedding an iframe run `npm start`. The iframe accepts pointer events
+For an example embedding an iframe run `npm start`, or try the
+[live demo](http://deathcap.github.io/gl-css3d). The iframe accepts pointer events
 and can be interacted with as an ordinary webpage. Click the button to toggle mouse
 inputs to control the camera instead (drag to move, scroll to zoom; uses
 [game-shell-orbit-camera](https://github.com/mikolalysenko/game-shell-orbit-camera)).
