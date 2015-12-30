@@ -3,6 +3,7 @@
 var matrixToCSS = require('matrix-to-css');
 var mat4 = require('gl-mat4');
 var createMesh = require('gl-mesh');
+var glShader = require('gl-shader');
 var glslify = require('glslify');
 
 module.exports = function(element, opts) {
@@ -46,6 +47,7 @@ function GLCSS3D(element, opts) {
   this.blend = (opts.blend !== undefined) ? opts.blend : false; // overwrite transparent color
   this.flipX = (opts.flipX !== undefined) ? opts.flipX : true;
   this.flipY = (opts.flipY !== undefined) ? opts.flipY : true;
+  this.backface = (opts.backface !== undefined) ? opts.backface : true;
 
   this.cutoutMesh = null;
   this.cutoutShader = null;
@@ -56,20 +58,28 @@ GLCSS3D.prototype.ginit = function(gl) {
   this.gl = gl;
   var hx = this.planeWidth / 2;
   var hy = this.planeHeight / 2;
-  this.cutoutMesh = createMesh(gl,
-        [
+
+  var indices =
+    // triangles forming a rectangle for the front face
+    [
         [2, 1, 0],
         [3, 1, 2]
-         ],
+    ];
+
+  if (this.backface) {
+    indices.push([0, 1, 2]);
+    indices.push([2, 1, 3]);
+  }
+
+  this.cutoutMesh = createMesh(gl, indices,
         { "position": [
           [-hx, -hy, 0],
           [-hx, +hy, 0],
           [+hx, -hy, 0],
           [+hx, +hy, 0]] })
 
-  this.cutoutShader = glslify({
-      inline: true,
-      vertex: "\
+  this.cutoutShader = glShader(gl,
+      glslify("\
   attribute vec3 position;\
   \
   uniform mat4 projection;\
@@ -77,16 +87,16 @@ GLCSS3D.prototype.ginit = function(gl) {
   \
   void main() {\
     gl_Position = projection * view * vec4(position, 1.0);\
-  }",
+  }", {inline: true}),
 
     // color it all transparent so CSS element is visible through
-    fragment: "\
+    glslify("\
   precision highp float;\
   uniform vec4 color;\
   \
   void main() {\
     gl_FragColor = color;\
-  }"})(gl)
+  }", {inline: true}));
 };
 
 GLCSS3D.prototype.updatePerspective = function(cameraFOVradians, width, height) {
