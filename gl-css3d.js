@@ -3,6 +3,7 @@
 var matrixToCSS = require('matrix-to-css');
 var mat4 = require('gl-mat4');
 var createMesh = require('gl-mesh');
+var glShader = require('gl-shader');
 var glslify = require('glslify');
 
 module.exports = function(element, opts) {
@@ -77,9 +78,8 @@ GLCSS3D.prototype.ginit = function(gl) {
           [+hx, -hy, 0],
           [+hx, +hy, 0]] })
 
-  this.cutoutShader = glslify({
-      inline: true,
-      vertex: "\
+  this.cutoutShader = glShader(gl,
+      glslify("\
   attribute vec3 position;\
   \
   uniform mat4 projection;\
@@ -87,16 +87,16 @@ GLCSS3D.prototype.ginit = function(gl) {
   \
   void main() {\
     gl_Position = projection * view * vec4(position, 1.0);\
-  }",
+  }", {inline: true}),
 
     // color it all transparent so CSS element is visible through
-    fragment: "\
+    glslify("\
   precision highp float;\
   uniform vec4 color;\
   \
   void main() {\
     gl_FragColor = color;\
-  }"})(gl)
+  }", {inline: true}));
 };
 
 GLCSS3D.prototype.updatePerspective = function(cameraFOVradians, width, height) {
