@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "gl-mat4": "^1.1.2",
-    "gl-mesh": "deathcap/gl-mesh#ndarrayops12",
+    "gl-mesh": "deathcap/gl-mesh#ndarrayops12+skip0",
     "gl-shader": "^4.1.1",
     "glslify": "^5.0.0",
     "matrix-to-css": "^1.0.4"
